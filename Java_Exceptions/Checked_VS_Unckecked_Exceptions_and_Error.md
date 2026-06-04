@@ -49,13 +49,13 @@ Unchecked exceptions = **programming mistakes** (erreur/bug de programmations) /
 * 💡On ne doit pas les ***catch***.**💡**The **'caller'** usually **not** **expected** to **handle** (**try/catch**) **it routinely**
 
   * **Exception** si on travaille sur une Web API et qu'on veut renvoyer un message request suite à la RuntimeException qui est apparu
-<pre>
+```java
   try {
     processPayment();
   } catch (IllegalArgumentException e) {
     return BAD_REQUEST;
   }
-</pre>
+```
 
 * **facultatif** de les **déclarer** dans le `**throws**` 
 * 💡Par contre on peut (**facultatif**) les "**throw**" mais c'est **à** **titre** purement **indicatif, pour le développeur** (**Bonne pratique** de les **indiquer explicitement** car on sais (humain) ce qui peut se produire au ***runtime***)

@@ -29,7 +29,91 @@ Ici ***Adapter*** par **Composition** : (plus facile à faire) l'adapter possèd
 5. The client code doesn’t get coupled to the concrete adapter class as long as it works with the adapter via the client interface. Thanks to this, you **can introduce new types of adapters into the program without breaking the existing client code**. This can be useful when the interface of the service class gets changed or replaced: you can just create a new adapter class without changing the client code.
 
 ### Exemple
-![adapter structure example](..\images\Adapter\Adapter_structure_exemple.png)
+
+
+```Mermaid
+classDiagram
+    %% ============================
+    %%        TARGET INTERFACE
+    %% ============================
+
+    class Target {
+        <<interface>>
+        + request()
+    }
+
+    %% ============================
+    %%        CLIENT
+    %% ============================
+
+    class Client {
+        - Target target
+        + Client(Target target)
+        + doWork()
+    }
+
+    Client --> Target : uses
+
+
+    %% ============================
+    %%        ADAPTER
+    %% ============================
+
+    class Adapter {
+        <<class>>
+        - Adaptee adaptee
+        + request()
+    }
+
+    Target <|.. Adapter
+    Adapter --> Adaptee : calls
+
+
+    %% ============================
+    %%        ADAPTEE
+    %% ============================
+
+    class Adaptee {
+        <<class>>
+        + specificRequest()
+    }
+
+```
+
+```Java
+class Client {
+    private Target target; // composition/reference to Target
+
+    public Client(Target target) {
+        this.target = target;
+    }
+
+    public void dowork() {
+        target.request();
+    }
+}
+```
+
+Here:
+- `Client` depends only on `Target`
+- `Adapter` implements `Target`
+- The actual object injected may be:
+    - an `Adapter`or
+    - another implementation of `Target`
+
+```Java
+class Adapter implements Target {
+    private Adaptee adaptee; // composition/reference to Adaptee
+
+    public Client(Adaptee adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void request() {
+        adaptee.specificRequest();
+    }
+}
+```
 
 Le système doit intégrer un sous-système existant.
 - Ce sous-système a une interface non standard par rapport au système.

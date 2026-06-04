@@ -234,9 +234,10 @@ Usually you would also add:
 1. ***Spring Batch*** **chunk(size)**
 
 Example:
-<pre>.stepBuilderFactory.get("step")
-    .«User, User»chunk(100)
-</pre>
+```java
+.stepBuilderFactory.get("step")
+    .<User, User>chunk(100)
+```
 
 👉 This means:
 

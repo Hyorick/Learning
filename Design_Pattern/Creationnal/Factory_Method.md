@@ -58,8 +58,102 @@ Products : *Cat*, *Dog*, *Duck*
 - Factory only wraps "new"
 
 ### Exemple
-![asteroid game](..\images\FactoryMethod\FactoryMethod_Example_asteroid_game.png)
+
+```Mermaid
+classDiagram
+    %% ============================
+    %%        ASTEROIDS
+    %% ============================
+
+    class Asteroid {
+        <<abstract>>
+        - int x
+        - int y
+        - int speed
+        + void update()
+        + void draw()
+    }
+
+    class SmallAsteroid {
+        <<class>>
+        + void update()
+        + void draw()
+    }
+
+    class GiantAsteroid {
+        <<class>>
+        + void update()
+        + void draw()
+    }
+
+    class FastAsteroid {
+        <<class>>
+        + void update()
+        + void draw()
+    }
+
+    Asteroid <|-- SmallAsteroid
+    Asteroid <|-- GiantAsteroid
+    Asteroid <|-- FastAsteroid
+
+
+    %% ============================
+    %%        FACTORIES
+    %% ============================
+
+    class AsteroidFactory {
+        <<abstract>>
+        + Asteroid createAsteroid()
+    }
+
+    class SmallAsteroidFactory {
+        <<class>>
+        + SmallAsteroid createAsteroid()
+    }
+
+    class GiantAsteroidFactory {
+        <<class>>
+        + GiantAsteroid createAsteroid()
+    }
+
+    class FastAsteroidFactory {
+        <<class>>
+        + FastAsteroid createAsteroid()
+    }
+
+    AsteroidFactory <|-- SmallAsteroidFactory
+    AsteroidFactory <|-- GiantAsteroidFactory
+    AsteroidFactory <|-- FastAsteroidFactory
+
+    SmallAsteroidFactory --> SmallAsteroid : creates
+    GiantAsteroidFactory --> GiantAsteroid : creates
+    FastAsteroidFactory --> FastAsteroid : creates
+
+```
 
 Client
+```java
+public class Game {
 
-![Client game](..\images\FactoryMethod\FactoryMethod_Example_asteroid_game_Client.png)
+    public static void main(String[] args) {
+
+        AsteroidFactory factory;
+
+        int waveType = 2;
+
+        if (waveType == 0) {
+            factory = new SmallAsteroidFactory();
+        }
+        else if (waveType == 1) {
+            factory = new GiantAsteroidFactory();
+        }
+        else {
+            factory = new FastAsteroidFactory();
+        }
+
+        Asteroid asteroid = factory.createAsteroid();
+
+        asteroid.draw();
+    }
+}
+```

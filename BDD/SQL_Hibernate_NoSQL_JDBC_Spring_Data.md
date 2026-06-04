@@ -144,11 +144,11 @@ Carol	US	400
 </pre>
 
 3. >GROUP BY **one column**
-<pre>
+```sql
 SELECT country, SUM(amount)
 FROM Orders
 GROUP BY country;
-</pre>
+```
 
 What happens internally:
 <pre>
@@ -239,12 +239,12 @@ Rule:
 - `HAVING` = **after** **grouping**
 
 Example:
-<pre>
+```sql
 SELECT customer, country, SUM(amount) as total
 FROM Orders
 GROUP BY customer, country
 HAVING SUM(amount) > 100;
-</pre>
+```
 ### Step-by-step thinking:
 
 - Step 1: GROUP BY **forms buckets**
@@ -349,13 +349,15 @@ Function	Purpose
 ## SQL (3) 
 
 20. Bonne Réponse **✅** 
-<pre>
-  "SELECT AVG(rating) 
-   FROM ratings" 
+```sql
+  SELECT AVG(rating) 
+  FROM ratings
+``` 
   et 
-  "SELECT SUM(rating) / COUNT(rating)
-   FROM Ratings;"
-</pre>
+```sql
+  SELECT SUM(rating) / COUNT(rating)
+  FROM Ratings;
+```
 
 ---
 21. Bonne Réponse **✅Il est possible de** créer des **unit test** pour les BDD : "Il n'existe pas d'outils spécifiques pour cela, mais **il est toujours possible d'utiliser un framework de test unitaire générique"**.
@@ -384,7 +386,7 @@ Mot clé à placer avant une requête "SELECT" pour avoir des **détails sur la 
 Exemple : exportation de données NoSQL vers une BDD SQL
 
 **NoSQL document** (MongoDB-style)
-<pre>
+```json
 {
  "id": 1,
  "name": "Alice",
@@ -399,7 +401,7 @@ Exemple : exportation de données NoSQL vers une BDD SQL
     }
    ]
 }
-</pre>
+```
 
 en convertissant pour compatibilité **SQL Database**
 
@@ -427,22 +429,22 @@ So **migration requires**:
 
 ---
 24. Bonne reponse **✅** pour compter le nombre de produits par catégorie
-<pre>
+```sql
 SELECT name as product_category, COUNT(product_id) as number_of_product
 FROM product
 GROUP BY product_category (ou name);
-</pre>
+```
 
 Signification : groups product by "name" and counts how many "product\_id" are in each "product\_category" (name)
 
 25. solution **✅**:
-<pre>
+```sql
 SELECT first_name, last_name, ROUND(AVG(score), 2) AS avg_score
 FROM students
 GROUP BY first_name, last_name
 HAVING AVG(score) >= 0.9
 ORDER BY avg_score DESC, first_name ASC;
-</pre>
+```
 
 On utilise HAVING à la place du WHERE (car le WHERE est censé s'executer avant la fonction d'aggregtion AVG du ROUND juste après le  GROUP BY)
 
@@ -494,14 +496,14 @@ signifie généralement :
 alors que la **Session Hibernate est déjà fermée**.
 
 >**Cause typique**, supposons :
-<pre>
+```java
 @Entity
 public class User {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Order> orders;
 }
-</pre>
+```
 
 Hibernate ne charge PAS orders immédiatement. (Les données ne sont chargées qu'au moment d'accès.)
 
@@ -518,7 +520,7 @@ La **connexion DB** est déjà **fermée**.
 
 > On modifie la valeur dans le **application.properties**
 
-<pre>
+```java
 for (int i=0; i<5; i++) {
     EntityManager.persist(new User("User n'"+ id, i+1));
 } 
@@ -529,9 +531,9 @@ for (int i=0; i<5; i++) {
     public User(String name, Integer id) {
          this.id = id;
          this.name = name;
- 	}
-}
-</pre>
+    }
+  }
+```
 
 
 

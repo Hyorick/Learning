@@ -3,8 +3,51 @@
 
 Le pattern ***Observer*** definit une relation entre les objets de type 1..* de sorte que lorsqu'un objet change d'état, tous ce qui en dépendent en soient informés et mis à jour automatiquement.
 
-![observer pattern](..\images\Observer\Observer_Pattern.png)
-2 Interfaces
+```Mermaid
+classDiagram
+    %% ============================
+    %%        INTERFACES
+    %% ============================
+
+    class Observable {
+        <<interface>>
+        - List~Observer~ observers
+        + subscribe(o: Observer)
+        + unsubscribe(o: Observer)
+        + notify()
+    }
+
+    class Observer {
+        <<interface>>
+        + update()
+    }
+
+    %% ============================
+    %%        CONCRETE CLASSES
+    %% ============================
+
+    class ConcreteObservable {
+        <<class>>
+        - state
+        + getState()
+        + setState(s)
+    }
+
+    class ConcreteObserver {
+        <<class>>
+        - observerState
+        + update()
+    }
+
+    %% ============================
+    %%        RELATIONS
+    %% ============================
+
+    Observable "1" --> "0..*" Observer : notifies
+    Observable <|-- ConcreteObservable
+    Observer <|-- ConcreteObserver
+```
+2 Interfaces:
 
 #### Observable
  - L'objet observé (**Observable**) détient l'état (information), 

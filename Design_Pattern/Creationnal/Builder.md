@@ -32,7 +32,49 @@ The ***Builder*** pattern suggests that you ***extract the object construction c
 ou 
 
 **sans le director**
-![strategy pattern](..\images\Builder\builder_sans_director.png)
+```Java
+public class Main {
+    public static void main(String[] args){
+        System.out.println("Has a garage: " + house.isHasGarage());
+    }
+}
+
+// House class
+@Getter
+@Setter
+public class House {
+    private int floors;
+    private int bedrooms;
+    private int bathrooms;
+    private boolean hasGarage;
+
+    public House() {}
+
+    public House(int floors, int bedrooms, int bathrooms, boolean hasGarage) { ... }
+
+    public static HouseBuilder builder() { return new HouseBuilder(); }
+
+    // House Builder
+    public static class HouseBuilder {
+        private House house = new House();
+
+        // Etapes
+        public HouseBuilder floors(int floors) {
+            house.floors = floors;
+            return this;
+        }
+
+        public HouseBuilder bedrooms(int bedrooms) { ... }
+
+        public HouseBuilder bathrooms(int bathrooms) { ... }
+
+        public HouseBuilder hasGarage(boolean hasGarage) { ... }
+
+        // Build method to create the House
+        public House build() { return this.house; }
+    }
+}
+```
 
 >### Use cases
 - To get rid of a “telescoping constructor”.

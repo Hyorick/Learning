@@ -1,4 +1,4 @@
-#### Pattern Abstract Factory (Fabrique Abstraite)
+# Pattern Abstract Factory (Fabrique Abstraite)
 **Catégorie**: Création | **Portée**: Classe
 
 #### Objectif :
@@ -8,7 +8,7 @@
 - Le Design Pattern permet d'isoler l'appartenance a une famille de classes.
 
 ### Structure: 
-![abstract factory ..\pattern](images\Abstract_Factory\abstract_factory.png)
+![abstract factory ..\pattern](..\images\Abstract_Factory\abstract_factory.png)
 
 >1. **Abstract Products** declare «interfaces» for a set of distinct but related products which make up a product family.
 
@@ -34,5 +34,136 @@
 
 >- Avec **Database et plugins JDBC** for Connection, command and transaction. Ici 3 famille d'objet  DBConnection,  DBCommand and DBTransaction (leurs variants : PostgreSQL et MySQL) 
 
-![Exemple_Abstract_Factory](..\images\Abstract_Factory\Exemple_Abstract_Factory.png)
-![Client code](..\images\Abstract_Factory\Client_code_Exemple_Abstract_Factory.png)
+
+```Mermaid
+classDiagram
+    %% ============================
+    %%        ABSTRACT FACTORY
+    %% ============================
+
+    class DatabaseFactory {
+        <<interface>>
+        + DBConnection createConnection()
+        + DBCommand createCommand()
+        + DBTransaction createTransaction()
+    }
+
+    class MySQLFactory {
+        <<class>>
+        + DBConnection createConnection()
+        + DBCommand createCommand()
+        + DBTransaction createTransaction()
+    }
+
+    class PostgreSQLFactory {
+        <<class>>
+        + DBConnection createConnection()
+        + DBCommand createCommand()
+        + DBTransaction createTransaction()
+    }
+
+    DatabaseFactory <|-- MySQLFactory
+    DatabaseFactory <|-- PostgreSQLFactory
+
+
+    %% ============================
+    %%        CONNECTIONS
+    %% ============================
+
+    class DBConnection {
+        <<interface>>
+        + open()
+        + close()
+    }
+
+    class MySQLConnection {
+        <<class>>
+    }
+
+    class PostgreSQLConnection {
+        <<class>>
+    }
+
+    MySQLFactory --> MySQLConnection : creates
+    PostgreSQLFactory --> PostgreSQLConnection : creates
+
+    DBConnection <|.. MySQLConnection
+    DBConnection <|.. PostgreSQLConnection
+
+
+    %% ============================
+    %%        COMMANDS
+    %% ============================
+
+    class DBCommand {
+        <<interface>>
+        + execute()
+    }
+
+    class MySQLCommand {
+        <<class>>
+    }
+
+    class PostgreSQLCommand {
+        <<class>>
+    }
+
+    MySQLFactory --> MySQLCommand : creates
+    PostgreSQLFactory --> PostgreSQLCommand : creates
+
+    DBCommand <|.. MySQLCommand
+    DBCommand <|.. PostgreSQLCommand
+
+
+    %% ============================
+    %%        TRANSACTIONS
+    %% ============================
+
+    class DBTransaction {
+        <<interface>>
+        + commit()
+        + rollback()
+    }
+
+    class MySQLTransaction {
+        <<class>>
+    }
+
+    class PostgreSQLTransaction {
+        <<class>>
+    }
+
+    MySQLFactory --> MySQLTransaction : creates
+    PostgreSQLFactory --> PostgreSQLTransaction : creates
+
+    DBTransaction <|.. MySQLTransaction
+    DBTransaction <|.. PostgreSQLTransaction
+
+```
+
+```java
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 1. Choose the factory (plugin)
+        DatabaseFactory factory = new MySQLFactory();
+
+        // 2. Create objects via factory (no concrete classes in client logic)
+        DBConnection connection = factory.createConnection();
+        DBCommand command = factory.createCommand();
+        DBTransaction transaction = factory.createTransaction();
+
+        // 3. Use the objects
+        connection.open();
+
+        transaction.begin();
+
+        command.execute("SELECT * FROM users");
+
+        transaction.commit();
+
+        connection.close();
+    }
+}
+```
