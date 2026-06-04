@@ -126,7 +126,7 @@ Instead of recursion, build results step by step.
 Fibonacci : fib(n) = fib(n-1) + fib(n-2)
 
 > **Normal Recursive** Fibonacci
-<pre>
+```java
 public static int fib(int n) {
 
     if (n <= 1) {
@@ -135,12 +135,12 @@ public static int fib(int n) {
 
     return fib(n - 1) + fib(n - 2);
 }
-</pre>
+```
 
 >**Memoization** (Top-Down : du Haut n vers le bas 0)
 
 We save already computed values.
-<pre>
+```sql
 static Map«Integer, Integer» cache = new HashMap<>();
 
 public static int fib(int n) {
@@ -159,7 +159,8 @@ public static int fib(int n) {
 
     return result;
 }
-</pre>
+```
+
 For fib(5) we have
 - First time: fib(4) computed
 - Next time: fib(4) retrieved from cache. No recomputation
@@ -167,7 +168,7 @@ For fib(5) we have
 > **Tabulation** (Bottom-up : du bas 0 vers le haut n)
 
 Instead of recursion, build results step by step
-<pre>
+```java
 public static int fib(int n) {
 
     if (n <= 1) {
@@ -185,12 +186,12 @@ public static int fib(int n) {
 
     return dp[n];
 }
-</pre>
+```
 
 >**Optimized Iterative**
 
 Uses only 2 variables instead of array.
-<pre>
+```java
 public static int fib(int n) {
 
     if (n <= 1) {
@@ -210,7 +211,7 @@ public static int fib(int n) {
 
     return prev1;
 }
-</pre>
+```
 
 | Version | Time | Space |
 |---|---|---|
@@ -272,9 +273,9 @@ Pour les HashMap lorsqu'on à 2 clés ayant le même Hashcode, les valeurs pour 
 
 ### How HashMap checks key uniqueness
 When you do:
-
+```java
 map.put(key, value);
-
+```
 Java internally does this:
 
 - >**Step 1 — hashCode**()
@@ -292,9 +293,9 @@ So first it decides:
 - >**Step 2 — equals()**
 
 Inside that bucket, Java checks:
-
+```java
 existingKey.equals(newKey)
-
+```
 This is used to decide:
 
 👉 “Is this the same key or a new one?”
@@ -439,7 +440,7 @@ Scheduling Tasks
 - utilisé avec `notify()` (wakes ONE waiting thread) ou `notifyAll()` (Utilisé dans un **block synchronized**)
 
 - **Extends** `Thread`
-<pre>
+```java
 public class MyThread extends Thread {
     public void run() {
         System.out.println("New thread is running");
@@ -449,10 +450,10 @@ public class MyThread extends Thread {
 MyThread myThread = new MyThread();
 // launch the new thread
 myThread.start();
-</pre>
+```
 
 - ***Implements*** `Runnable` (more common)
-<pre>
+```java
 @FunctionalInterface
 public interface Runnable {
     public abstract void run();
@@ -473,8 +474,7 @@ myThread.start();
 or 🟧Option 2
 Thread myThread = new Thread(() -> System.out.println("New thread is running")); //lambda expression
 myThread.start();
-
-</pre>
+```
 
 - Thread Pool with Executor, Executor Service Interface and Callable interface (**Méthode à privilégier**)
 
@@ -588,7 +588,7 @@ myThread.start();
 
 `synchronized(**customLock**)`
 
-<pre>
+```java
     // STATIC ATTRIBUTE
     private static int totalAccounts = 0;
     private static final Object STATIC_LOCK = new Object(); // protect static attribute "totalAccounts"
@@ -628,7 +628,7 @@ myThread.start();
             return totalAccounts;
         }
     }
-</pre>
+```
 ou 
 `ReentrantLock` (**Best**) give gives extra features:
 - tryLock(),

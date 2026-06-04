@@ -13,13 +13,68 @@
 
 ### Approche Thread unsafe
 
-![singleton naive approach](..\images\Singleton\Singleton_naive_approach.png)
+```java
+package fr.koor.samples;
+
+public final class Singleton { //Approche naïve du Singleton
+
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance () {
+        if ( instance == null ) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+```
+
 ### Approche Thread Safe
 
-![singleton naive approach](..\images\Singleton\Singleton_thread_safe_approach.png)
+```java
+public class Singleton {
+
+    // volatile ensures visibility of changes across threads
+    private static volatile Singleton instance;
+
+    // private constructor prevents instantiation
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        // First check (no locking for better performance)
+        if (instance == null) {
+
+            synchronized (Singleton.class) {
+                // Second check (with Locking)
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+
+        return instance;
+    }
+}
+```
+
 >### (Privilégié) Approche instance crée dès le chargement
 
-![singleton 3rd approach](..\images\Singleton\Singleton_3rd_approach.png)
+```java
+package fr.koor.samples;
+
+public final class Singleton {
+
+    private static final Singleton INSTANCE = new Singleton ();
+
+    private Singleton() {
+
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+}
+```
 
 ### Use cases
 -  En général, cette situation se présente lorsque l’on veut contrôler l’accès à une ressource partagée — une **base de données** ou un **fichier** par exemple.
