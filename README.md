@@ -1,2 +1,2 @@
 # Learning
-From Java to Spring and BDD and Kafka
+Learning initiative From Java to Spring and BDD and Kafka
