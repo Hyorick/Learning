@@ -11,7 +11,6 @@ classDiagram
 
     class Observable {
         <<interface>>
-        - List~Observer~ observers
         + subscribe(o: Observer)
         + unsubscribe(o: Observer)
         + notify()
@@ -28,6 +27,7 @@ classDiagram
 
     class ConcreteObservable {
         <<class>>
+        - List~Observer~ observers
         - state
         + getState()
         + setState(s)
@@ -43,20 +43,25 @@ classDiagram
     %%        RELATIONS
     %% ============================
 
-    Observable "1" --> "0..*" Observer : notifies
+    ConcreteObservable --> "0..*" Observer : notifies
     Observable <|-- ConcreteObservable
     Observer <|-- ConcreteObserver
-```
-2 Interfaces:
 
+    %% Colors
+    style Observable fill:#ffcc66,stroke:#d4a64d,stroke-width:2px,color:#000000
+
+    style Observer fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+```
+
+2 Interfaces:
 #### Observable
- - L'objet observé (**Observable**) détient l'état (information), 
- - gèrent une liste d'observateurs (**Observer**) avec subscribe/unsubscribe
- - et les notifie (en appelant la méthode **update()** de l'**Observer**) automatiquement lors d'un changement de son état ou de l'exécution de certains comportements.
+ - L'objet observé (`Observable`) détient l'état (information),
+ - gèrent une liste d'observateurs (`Observer`) avec subscribe/unsubscribe
+ - et les notifie (en appelant la méthode **update()** de l'`Observer`) automatiquement lors d'un changement de son état ou de l'exécution de certains comportements.
 
 #### Observer
-- s’abonne (peut aussi se désabonner quand il veut) à l’**Observable** 
-- et implémente **update()** pour réagir et se synchroniser avec  l'état de l'**Observable**.
+- s’abonne (peut aussi se désabonner quand il veut) à l’`Observable`
+- et implémente **update()** pour réagir et se synchroniser avec  l'état de l'`Observable`.
 
 ### 👉 Cas d'utilisation 
 - Utilisez ce patron quand des modifications de l’**état d’un objet peuvent en impacter d’autres**, et que l’*ensemble des objets n’est pas connu à l’avance* ou qu’il change dynamiquement. 
