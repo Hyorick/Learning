@@ -1,4 +1,5 @@
 # Pattern Adapter
+**Catégorie**: Structure | **Portée**: Objet ou Classe
 
 #### Intention 
 - allows objects with incompatible interfaces to collaborate
@@ -12,11 +13,55 @@
  - Le Design Pattern **permet d'isoler l'adaptation** d'un sous-système.
 
 ### Structure
-![adapter heritage et composition](..\images\Adapter\Adapter_structure_Heritage_Composition.png)
->Pour ***Adapter*** par **Héritage**: l'adapter hérite du Service, !! **marche pas si ClientInterface est une "class"** car héritage multiple interdit en Java.
 
-Ici ***Adapter*** par **Composition** : (plus facile à faire) l'adapter possède un attribut de type Service
-![adapter structure composition](..\images\Adapter\Adapter_structure.png)
+#### Adapter par **Composition**
+(plus facile à faire) l'adapter possède un attribut de type Service
+
+```mermaid
+classDiagram
+
+    %% Client
+    class Client {
+        <<class>>
+    }
+
+    %% Client Interface
+    class ClientInterface {
+        <<interface>>
+        + method(data)
+    }
+
+    %% Service (the adaptee)
+    class Service {
+        <<class>>
+        + serviceMethod(specialData)
+        ...
+    }
+
+    %% Adapter
+    class Adapter {
+        <<class>>
+        - adaptee : Service
+        + method(data)
+    }
+
+    %% Relationships
+    Client "0..1" --> "1..1" ClientInterface : uses
+    Adapter ..|> ClientInterface : implements
+    Adapter "0..1" --> "1..1" Service : adapts
+
+    %% Note showing conversion logic
+    note for Adapter "
+        specialData = convertToServiceFormat(data)
+        return adaptee.serviceMethod(specialData)
+    "
+
+    %% Colors
+    style ClientInterface fill:#d9b3ff,stroke:#b380ff,stroke-width:2px,color:#000000
+
+    style ImplAdaptee fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+    style Adapter fill:#66d1c6,stroke:#3aa399,stroke-width:2px,color:#000000
+```
 
 >1. The **Client** (manipule des objets Standard ou n'accepte qu'un Standard, Ex: un Screen Monitor qui n'accepte que du VGA et pas HDMI) is a **class** that contains the existing business logic of the program. (on va faire appel au code de la class incompatible **Service** en passant par **ClientInterface** puis **Adapter** !! sans modifier le code du Client)
 
@@ -27,6 +72,52 @@ Ici ***Adapter*** par **Composition** : (plus facile à faire) l'adapter possèd
 >4. The **Adapter** (middle man ou adaptateur) is a **class** that’s **able to work with both the** *client* and the *service*: it *implements the client interface*, while *wrapping the service object*. The ***adapter*** receives **calls from the** *client* **via the** *client interface* and translates them into calls to the wrapped service object in a format it can understand.
 
 5. The client code doesn’t get coupled to the concrete adapter class as long as it works with the adapter via the client interface. Thanks to this, you **can introduce new types of adapters into the program without breaking the existing client code**. This can be useful when the interface of the service class gets changed or replaced: you can just create a new adapter class without changing the client code.
+
+#### Adapter par **Héritage**
+L'adapter hérite du Service, 🚨 **marche pas si ClientInterface (Standard) est une "class"** car héritage multiple interdit en Java.
+
+```mermaid
+classDiagram
+
+    %% Classes
+    class Client {
+        <<class>>
+    }
+
+    class Standard {
+        + operation() void
+    }
+
+    class StandardImpl1 {
+        <<class>>
+        + operation() void
+    }
+
+    class ImplAdaptee {
+        <<class>>
+        + operation2() void
+        + operation3() void
+    }
+
+    class Adapter {
+        <<class>>
+        + operation() void
+    }
+
+    %% Relationships
+    Client "0..1" --> "1..1" Standard : uses
+    Standard <|.. StandardImpl1
+    Standard <|.. Adapter
+    ImplAdaptee <|-- Adapter
+
+    %% Colors
+    style Standard fill:#d9b3ff,stroke:#b380ff,stroke-width:2px,color:#000000
+
+    style Client fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+    style StandardImpl1 fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+    style ImplAdaptee fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+    style Adapter fill:#66d1c6,stroke:#3aa399,stroke-width:2px,color:#000000
+```
 
 ### Exemple
 

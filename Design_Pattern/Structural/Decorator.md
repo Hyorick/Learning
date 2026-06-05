@@ -1,4 +1,5 @@
 # Pattern Decorator
+**Catégorie**: Structure | **Portée**: Objet
 
 #### Intention
 

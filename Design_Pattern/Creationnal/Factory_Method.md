@@ -22,7 +22,53 @@ Products : *Cat*, *Dog*, *Duck*
 
 ### Structure
 
-![Factory method structure](..\images\FactoryMethod\FactoryMethod_structure.png)
+```mermaid
+classDiagram
+
+    %% Product interface
+    class Product {
+        <<interface>>
+        + doStuff()
+    }
+
+    %% Concrete Products
+    class ConcreteProductA {
+        <<class>>
+        + doStuff()
+    }
+    class ConcreteProductB {
+        <<class>>
+        + doStuff()
+    }
+
+    %% Creator
+    class Creator {
+        <<class>>
+        + someOperation()
+        + createProduct() Product
+    }
+
+    %% Concrete Creators
+    class ConcreteCreatorA {
+        <<class>>
+        + createProduct() Product
+    }
+    class ConcreteCreatorB {
+        <<class>>
+        + createProduct() Product
+    }
+
+    %% Relationships
+    Product <|.. ConcreteProductA
+    Product <|.. ConcreteProductB
+
+    Creator <|.. ConcreteCreatorA
+    Creator <|.. ConcreteCreatorB
+
+    Creator --> Product : "createProduct()"
+    ConcreteCreatorA --> ConcreteProductA : "return new"
+    ConcreteCreatorB --> ConcreteProductB : "return new"
+```
 
 >1. The **Product** declares the interface, which is **common to all objects** that can be produced by the ***creator and its subclasses***.
 
@@ -108,17 +154,17 @@ classDiagram
 
     class SmallAsteroidFactory {
         <<class>>
-        + SmallAsteroid createAsteroid()
+        + Asteroid createAsteroid()
     }
 
     class GiantAsteroidFactory {
         <<class>>
-        + GiantAsteroid createAsteroid()
+        + Asteroid createAsteroid()
     }
 
     class FastAsteroidFactory {
         <<class>>
-        + FastAsteroid createAsteroid()
+        + Asteroid createAsteroid()
     }
 
     AsteroidFactory <|-- SmallAsteroidFactory

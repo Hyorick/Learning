@@ -8,7 +8,78 @@
 - Le Design Pattern permet d'isoler l'appartenance a une famille de classes.
 
 ### Structure: 
-![abstract factory ..\pattern](..\images\Abstract_Factory\abstract_factory.png)
+
+```mermaid
+classDiagram
+
+    %% Abstract Products
+    class ProductA {
+        <<abstract>>
+    }
+    class ProductB {
+        <<abstract>>
+    }
+
+    %% Concrete Products A
+    class ConcreteProductA1 {
+        <<class>>
+    }
+    class ConcreteProductA2 {
+        <<class>>
+    }
+
+    %% Concrete Products B
+    class ConcreteProductB1 {
+        <<class>>
+    }
+    class ConcreteProductB2 {
+        <<class>>
+    }
+
+    %% Abstract Factory
+    class AbstractFactory {
+        <<Interface>>
+        + createProductA() ProductA
+        + createProductB() ProductB
+    }
+
+    %% Concrete Factories
+    class ConcreteFactory1 {
+        <<class>>
+        + createProductA() ProductA
+        + createProductB() ProductB
+    }
+    class ConcreteFactory2 {
+        <<class>>
+        + createProductA() ProductA
+        + createProductB() ProductB
+    }
+
+    %% Client
+    class Client {
+        <<class>>
+        - factory : AbstractFactory
+        + Client(f : AbstractFactory)
+        + someOperation()
+    }
+
+    %% Relationships
+    AbstractFactory <|.. ConcreteFactory1
+    AbstractFactory <|.. ConcreteFactory2
+
+    ProductA <|.. ConcreteProductA1
+    ProductA <|.. ConcreteProductA2
+
+    ProductB <|.. ConcreteProductB1
+    ProductB <|.. ConcreteProductB2
+
+    Client --> AbstractFactory : uses
+    ConcreteFactory1 --> ConcreteProductA1
+    ConcreteFactory1 --> ConcreteProductB1
+    ConcreteFactory2 --> ConcreteProductA2
+    ConcreteFactory2 --> ConcreteProductB2
+
+```
 
 >1. **Abstract Products** declare «interfaces» for a set of distinct but related products which make up a product family.
 
