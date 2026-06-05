@@ -105,7 +105,7 @@ classDiagram
 
 ### Exemple
 
-```Mermaid
+```mermaid
 classDiagram
     %% ============================
     %%        ASTEROIDS
