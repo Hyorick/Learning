@@ -550,7 +550,7 @@ Usually you would also add:
 - Multi-step jobs
 - Restartability
 
-### Relation entre Spring Batch et Hibernate JDBC Batch
+## Relation entre Spring Batch et Hibernate JDBC Batch
 1. ***Spring Batch*** **chunk(size)**
 
 Example:

@@ -3,7 +3,7 @@
 
 Le pattern ***Observer*** definit une relation entre les objets de type 1..* de sorte que lorsqu'un objet change d'état, tous ce qui en dépendent en soient informés et mis à jour automatiquement.
 
-```Mermaid
+```mermaid
 classDiagram
     %% ============================
     %%        INTERFACES

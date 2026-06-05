@@ -122,7 +122,7 @@ classDiagram
 ### Exemple
 
 
-```Mermaid
+```mermaid
 classDiagram
     %% ============================
     %%        TARGET INTERFACE
