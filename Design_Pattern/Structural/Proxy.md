@@ -94,17 +94,24 @@ Why use a Proxy?
 Common use cases:
 
 1. Security
-
+```java
 checkUserRole();
 realObject.doWork();
+```
+
 2. Logging
+```java
 logRequest();
 realObject.doWork();
+```
+
 3. Caching
+```java
 if(cacheExists)
    return cache;
 
 return realObject.doWork();
+```
 4. Lazy Loading
 
 Create expensive objects only when needed.

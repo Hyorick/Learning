@@ -13,10 +13,74 @@ The ***Builder*** pattern suggests that you ***extract the object construction c
 
 !! The ***Builder*** **doesn’t allow** other objects to **access the product while it’s being built**. Le **constructeur** du **Product** est ***private***.
 
-![builder example](..\images\Builder\Builder_example.png)
-
 >### Structure 
-![builder structure](..\images\Builder\Builder_structure.png)
+```mermaid
+classDiagram
+
+    %% 1. Builder Interface
+    class Builder {
+        <<interface>>
+        + reset()
+        + buildStepA() Builder
+        + buildStepB() Builder
+        + buildStepZ() Builder
+    }
+
+    %% 2. Concrete Builders
+    class ConcreteBuilder1 {
+        - result : Product1
+        + reset()
+        + buildStepA()
+        + buildStepB()
+        + buildStepZ()
+        + getResult() Product1
+    }
+
+    class ConcreteBuilder2 {
+        - result : Product2
+        + reset()
+        + buildStepA()
+        + buildStepB()
+        + buildStepZ()
+        + getResult() Product2
+    }
+
+    %% 3. Products
+    class Product1
+    class Product2
+
+    %% 4. Director
+    class Director {
+        <<class>>
+        - builder : Builder
+        + Director(builder)
+        + changeBuilder(builder)
+        + make(type)
+    }
+
+    %% 5. Client
+    class Client {
+        + main()
+    }
+
+    %% Relationships
+    Builder <|.. ConcreteBuilder1
+    Builder <|.. ConcreteBuilder2
+
+    ConcreteBuilder1 --> Product1 : creates
+    ConcreteBuilder2 --> Product2 : creates
+
+    Director --> Builder : uses
+    Client --> Director : uses
+
+    %% Colors
+    style Builder fill:#d9b3ff,stroke:#b380ff,stroke-width:2px,color:#000000
+    style Director fill:#66d1c6,stroke:#3aa399,stroke-width:2px,color:#000000
+    style Client fill:#66b3ff,stroke:#3385cc,stroke-width:2px,color:#000000
+    style Product1 fill:#b3ffcc,stroke:#66cc99,stroke-width:2px,color:#000000
+    style Product2 fill:#b3ffcc,stroke:#66cc99,stroke-width:2px,color:#000000
+
+```
 
 >1. The ***Builder*** interface declares product construction steps that are common to all types of builders.
 
@@ -82,3 +146,26 @@ public class House {
 - To construct Composite trees or other complex objects (qui contiennent beaucoup d'attributs).
 
 >**Produits**: computer (gaming builder, office builder etc), bicycle (**vtc builder, road builder, vtt builder** etc avec respectivement **vtcBuilder(), vttBuilder(), roadBuilder()** dans la classe ***bicycle***), car(mercedes, ferrari, etc), house(maison piscine, maison jardin etc), bank account (courant, livret A etc) etc
+
+### builder example
+```mermaid
+classDiagram
+
+    %% Builder
+    class HouseBuilder {
+        <<class>>
+        + buildWalls()
+        + buildDoors()
+        + buildWindows()
+        + buildRoof()
+        + buildGarage()
+        + getResult() : House
+    }
+
+    %% Product
+    class House {
+    }
+
+    %% Relations
+    HouseBuilder --> House : creates
+```

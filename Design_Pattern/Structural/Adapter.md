@@ -138,6 +138,7 @@ classDiagram
     %% ============================
 
     class Client {
+        <<class>>
         - Target target
         + Client(Target target)
         + doWork()

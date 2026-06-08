@@ -20,7 +20,62 @@ The pattern usually has:
 
 >- **Concrete Decorators** → define **extra behaviors** that can **be added** to components dynamically.
 
-![decorator structure](..\images\Decorator\Decorator_structure.png)
+```mermaid
+classDiagram
+
+    %% Component interface
+    class Component {
+        <<interface or abstract class>>
+        + execute()
+    }
+
+    %% Concrete Component
+    class ConcreteComponent {
+        <<class>>
+        ...
+        + execute()
+    }
+
+    %% Base Decorator
+    class BaseDecorator {
+        <<class>>
+        - wrappee : Component
+        + BaseDecorator(c : Component)
+        + execute()
+    }
+
+    %% Concrete Decorators
+    class ConcreteDecorator1 {
+        <<class>>
+        + execute()
+        + extra()
+    }
+
+    class ConcreteDecorator2 {
+        <<class>>
+        + execute()
+        + extra()
+    }
+
+    %% Client
+    class Client {
+        <<class>>
+        + main()
+    }
+
+    %% Relationships
+    Component <|.. ConcreteComponent
+    Component <|.. BaseDecorator
+    BaseDecorator <|-- ConcreteDecorator1
+    BaseDecorator <|-- ConcreteDecorator2
+    BaseDecorator --> Component : wraps
+    Client --> Component : uses
+
+
+    %% Colors
+    style Component fill:#b3d1ff,stroke:#4a90e2,stroke-width:2px,color:#000000
+    style BaseDecorator fill:#66d1c6,stroke:#3aa399,stroke-width:2px,color:#000000
+```
 
 >#### Key Benefits 💡:
 
@@ -42,6 +97,57 @@ The pattern usually has:
 >***Decorator*** pattern is used heavily in **`Java IO (Input/Output)`**:
 
 ##### exemple 1 IO
+
+```mermaid
+classDiagram
+
+    %% Component
+    class Reader {
+        <<abstract class>>
+        + read()
+    }
+
+    %% Concrete Component
+    class FileReader {
+        <<class>>
+        + read()
+    }
+
+    %% Base Decorator
+    class BufferedReader {
+        <<class>>
+        - in : Reader
+        + read()
+        + readLine()
+    }
+
+    %% Concrete Decorator
+    class LineNumberReader {
+        <<class>>
+        - in : Reader
+        + read()
+        + getLineNumber()
+    }
+
+    %% Client
+    class Client {
+        <<class>>
+        + main()
+    }
+
+    %% Relationships
+    Reader <|-- FileReader
+    Reader <|-- BufferedReader
+    BufferedReader <|-- LineNumberReader
+    BufferedReader --> Reader : wraps
+    LineNumberReader --> Reader : wraps
+    Client --> Reader : uses
+
+    %% Colors (GitHub + VSCode compatible)
+    style Reader fill:#b3d1ff,stroke:#4a90e2,stroke-width:2px,color:#000000
+    style BufferedReader fill:#66d1c6,stroke:#3aa399,stroke-width:2px,color:#000000
+```
+
 `FileReader` (class wrappé) -> `BufferedReader` -> `LineNumberReader` : Each wrapper adds new behavior 
 
 ```Java
